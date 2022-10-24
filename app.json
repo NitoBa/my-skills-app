@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "offline-app",
+    "slug": "offline-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
