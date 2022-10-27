@@ -5,7 +5,11 @@ import Feather from '@expo/vector-icons/Feather'
 import { InputText } from '../InputText'
 import { SkillProps } from '../../types/skill'
 
-export function CardSkill({ title, type }: SkillProps) {
+type Props = {
+  onPressDelete: () => void
+} & SkillProps
+
+export function CardSkill({ title, type, onPressDelete }: Props) {
   const [isEditing, setIsEditing] = useState(false)
 
   function toggleEditSkill() {
@@ -30,7 +34,7 @@ export function CardSkill({ title, type }: SkillProps) {
           </Box>
         </HStack>
         <HStack space="3">
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPressDelete}>
             <Box bgColor="dark.200" p="2" borderRadius="3">
               <Feather color="#FFF" size={20} name="trash" />
             </Box>

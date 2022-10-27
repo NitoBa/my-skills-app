@@ -16,6 +16,7 @@ type SkillContextData = {
   skills: SkillProps[]
   handleSubmitNewSkill: (data: { title: string }) => Promise<void>
   handleChangeSkillType: (type: SkillType) => void
+  handleDeleteSkill: (id: string) => void
 }
 
 export const SkillContext = createContext<SkillContextData>(
@@ -57,6 +58,20 @@ export function SkillProvider({ children }: { children: ReactNode }) {
     setSkillType(type)
   }, [])
 
+  const handleDeleteSkill = useCallback(async (id: string) => {
+    await database.write(async () => {
+      const skill = await database.get<SkillModel>(SkillModel.table).find(id)
+      await skill.destroyPermanently()
+      setSkills((state) => {
+        return state.filter((skill) => skill.id !== id)
+      })
+      toast.show({
+        title: 'Skill deleted',
+        bgColor: 'green.500',
+      })
+    })
+  }, [])
+
   const getAllSkills = useCallback(async () => {
     const allSkills = await database
       .get<SkillModel>(SkillModel.table)
@@ -80,7 +95,13 @@ export function SkillProvider({ children }: { children: ReactNode }) {
 
   return (
     <SkillContext.Provider
-      value={{ handleSubmitNewSkill, handleChangeSkillType, skills, skillType }}
+      value={{
+        handleSubmitNewSkill,
+        handleChangeSkillType,
+        handleDeleteSkill,
+        skills,
+        skillType,
+      }}
     >
       {children}
     </SkillContext.Provider>

@@ -7,7 +7,7 @@ import Animation from '../../assets/animation.json'
 import { SkillContext } from '../../contexts/SkillContext'
 
 export function SkillsList() {
-  const { skills } = useContext(SkillContext)
+  const { skills, handleDeleteSkill } = useContext(SkillContext)
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
@@ -36,7 +36,12 @@ export function SkillsList() {
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
         <Box mb="3">
-          <CardSkill id={item.id} title={item.title} type={item.type} />
+          <CardSkill
+            id={item.id}
+            title={item.title}
+            type={item.type}
+            onPressDelete={() => handleDeleteSkill(item.id)}
+          />
         </Box>
       )}
     />
