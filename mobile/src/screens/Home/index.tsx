@@ -80,7 +80,7 @@ export function Home() {
           </TouchableOpacity>
         </HStack>
         <SkillFilter />
-        <VStack mt="8" space="3" mb="16">
+        <VStack mt="8" space="3" flex="1">
           <Text color="white" fontSize="xl" fontWeight={700}>
             My skills
           </Text>

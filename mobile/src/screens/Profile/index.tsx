@@ -9,13 +9,13 @@ import { AuthContext } from '../../contexts/AuthContext'
 export function Profile() {
   const { user, handleLogout } = useContext(AuthContext)
   return (
-    <Box flex="1" safeArea px="4">
+    <Box flex="1" safeArea px="4" bgColor="gray.900">
       <Header title="Profile" />
       <VStack flex="1" alignItems="center" justifyContent="center" space="3">
         <Box rounded="full" bgColor="gray.800" p="8">
           <Icon name="user" color="white" size="6xl" as={Feather} />
         </Box>
-        <Text color="white" fontSize="xl" fontWeight="bold">
+        <Text color="white" fontSize="2xl" fontWeight="bold">
           {user?.name}
         </Text>
         <InputText value={user?.email} isDisabled />
