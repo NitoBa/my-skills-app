@@ -6,7 +6,6 @@ import { Routes } from './src/routes'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { client } from './src/lib/react-query'
 import { AuthProvider } from './src/contexts/AuthContext'
-import { NavigationContainer } from '@react-navigation/native'
 
 export default function App() {
   return (
@@ -14,13 +13,11 @@ export default function App() {
       <StatusBar style="light" />
       <NativeBaseProvider>
         <QueryClientProvider client={client}>
-          <NavigationContainer>
-            <AuthProvider>
-              <SkillProvider>
-                <Routes />
-              </SkillProvider>
-            </AuthProvider>
-          </NavigationContainer>
+          <AuthProvider>
+            <SkillProvider>
+              <Routes />
+            </SkillProvider>
+          </AuthProvider>
         </QueryClientProvider>
       </NativeBaseProvider>
     </>

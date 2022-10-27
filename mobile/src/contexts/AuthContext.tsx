@@ -12,7 +12,6 @@ import {
   saveToken,
   clearAccessToken,
 } from '../storage/handleAccessToken'
-import { useNavigation } from '@react-navigation/native'
 import {
   getUserFromLocalStorage,
   setUserToLocalStorage,
@@ -28,7 +27,6 @@ type AuthContextData = {
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const navigation = useNavigation()
   const [user, setUser] = useState<User | null>(null)
   const [isLoggedIn, setIsLoggedIn] = useState<'idle' | 'logged' | 'notLogged'>(
     'idle',
@@ -50,7 +48,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const user = await getUserFromLocalStorage()
         setUser(user)
         setIsLoggedIn('logged')
-        navigation.navigate('home')
       } else {
         setIsLoggedIn('notLogged')
       }
@@ -62,7 +59,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const handleLogout = useCallback(async () => {
     await clearAccessToken()
     setUser(null)
-    navigation.navigate('signIn')
     setIsLoggedIn('notLogged')
   }, [])
 
@@ -73,7 +69,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (user) {
       setUserToLocalStorage(user)
-      navigation.navigate('home')
     }
   }, [user])
 
