@@ -91,7 +91,11 @@ export class AuthController {
 
     const user: Partial<User | null> = await this.userService.findByEmail(email)
 
-    delete user?.password
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+
+    delete user.password
 
     return res.status(200).json({ ...user })
   }
