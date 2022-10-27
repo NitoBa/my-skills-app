@@ -1,3 +1,4 @@
-const TOKEN = '@cryme-app:accessToken'
+const TOKEN = '@my-skills-app:accessToken'
+const USER = '@my-skills-app:user'
 
-export { TOKEN }
+export { TOKEN, USER }

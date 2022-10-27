@@ -1,20 +1,15 @@
 import React, { useContext } from 'react'
-import {
-  Box,
-  Center,
-  HStack,
-  KeyboardAvoidingView,
-  Text,
-  VStack,
-} from 'native-base'
+import { Box, HStack, KeyboardAvoidingView, Text, VStack } from 'native-base'
 import { Platform, TouchableOpacity } from 'react-native'
 
 import Feather from '@expo/vector-icons/Feather'
+
 import { InputText } from '../../components/InputText'
 import { SkillFilter } from '../../components/SkillFilter'
-
 import { SkillsList } from '../../components/SkillsList'
 import { SkillContext } from '../../contexts/SkillContext'
+import { Header } from '../../components/Header'
+
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
@@ -55,24 +50,22 @@ export function Home() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <Box safeArea bgColor="dark.50" flex={1} px={4}>
-        <Center>
-          <Text color="white" fontSize="2xl" fontWeight={700}>
-            Skill App
-          </Text>
-        </Center>
+        <Header title="Skill App" />
         <HStack alignItems="flex-start" space="2" my="4">
-          <Controller
-            control={control}
-            name="title"
-            render={({ field: { onChange, value } }) => (
-              <InputText
-                placeholder="Type your skill..."
-                onChangeText={onChange}
-                errorMessage={errors.title?.message}
-                value={value}
-              />
-            )}
-          />
+          <Box flex="1">
+            <Controller
+              control={control}
+              name="title"
+              render={({ field: { onChange, value } }) => (
+                <InputText
+                  placeholder="Type your skill..."
+                  onChangeText={onChange}
+                  errorMessage={errors.title?.message}
+                  value={value}
+                />
+              )}
+            />
+          </Box>
           <TouchableOpacity onPress={handleSubmit(handleCreateNewSkill)}>
             <Box
               bgColor="dark.100"

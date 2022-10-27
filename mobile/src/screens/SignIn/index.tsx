@@ -35,7 +35,6 @@ const signInFormSchema = yup
   })
   .required()
 
-// TODO: it should be able to login a user on application
 export function SignInScreen() {
   const { handleSaveUserCredentials } = useContext(AuthContext)
   const navigation = useNavigation()
@@ -77,13 +76,13 @@ export function SignInScreen() {
   return (
     <KeyboardAvoidingView
       flex="1"
-      bgColor="gray.900"
       px="4"
+      bgColor="gray.900"
       justifyContent="center"
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <Center>
-        <Text color="white" fontSize="2xl" fontWeight="bold" py="8">
+      <Center py="8">
+        <Text color="white" fontSize="2xl" fontWeight="bold">
           Sign In
         </Text>
       </Center>

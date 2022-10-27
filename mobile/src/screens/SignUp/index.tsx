@@ -20,12 +20,17 @@ import { AuthResponse } from '../../types/authResponse'
 import { handleSignUpService, SignUpData } from '../../services/signUpService'
 
 type SignUpFormData = {
+  name: string
   email: string
   password: string
   confirmPassword: string
 }
 
 const signUpFormSchema = yup.object({
+  name: yup
+    .string()
+    .required('Name is required')
+    .min(4, 'Name should be at least 4 characters'),
   email: yup
     .string()
     .required('Email is required')
@@ -95,6 +100,17 @@ export function SignUpScreen() {
         </Text>
       </Center>
       <VStack space="4">
+        <Controller
+          name="name"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <InputText
+              placeholder="Enter with your name"
+              onChangeText={onChange}
+              errorMessage={errors.name?.message}
+            />
+          )}
+        />
         <Controller
           name="email"
           control={control}

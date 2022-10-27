@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'https://back.cryme.io/api/v1/open/'
+const baseURL = 'http://localhost:3333/'
 
 const api = axios.create({
   baseURL,

@@ -12,7 +12,7 @@ export function InputText({
 }: InputProps) {
   const invalid = !!errorMessage || isInvalid
   return (
-    <FormControl isInvalid={invalid} flex="1">
+    <FormControl isInvalid={invalid}>
       <Input
         color="white"
         bgColor="dark.100"
