@@ -36,7 +36,7 @@ export function SkillsList() {
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
         <Box mb="3">
-          <CardSkill id={item.id} title={item.title} />
+          <CardSkill id={item.id} title={item.title} type={item.type} />
         </Box>
       )}
     />

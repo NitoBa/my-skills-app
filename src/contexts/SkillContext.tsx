@@ -16,6 +16,7 @@ export const SkillContext = createContext<SkillContextData>(
 )
 
 export function SkillProvider({ children }: { children: ReactNode }) {
+  // eslint-disable-next-line no-unused-vars
   const [skills, setSkills] = useState<SkillProps[]>([])
   const [skillType, setSkillType] = useState<SkillType>('hard')
 
