@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { hash, compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { UserService } from '../services/user-service'
+import { User } from '@prisma/client'
 
 export class AuthController {
   // eslint-disable-next-line no-useless-constructor
@@ -40,6 +41,11 @@ export class AuthController {
 
     return res.status(201).json({
       accessToken,
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+      },
     })
   }
 
@@ -78,5 +84,15 @@ export class AuthController {
         email: userExists.email,
       },
     })
+  }
+
+  async me(req: Request, res: Response) {
+    const { email } = req.body
+
+    const user: Partial<User | null> = await this.userService.findByEmail(email)
+
+    delete user?.password
+
+    return res.status(200).json({ ...user })
   }
 }
