@@ -17,7 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { Loading } from '../../components/Loading'
-import { SignInResponse } from '../../types/signInResponse'
+import { AuthResponse } from '../../types/authResponse'
 
 type SignInFormData = {
   email: string
@@ -47,7 +47,7 @@ export function SignInScreen() {
     resolver: yupResolver(signInFormSchema),
   })
 
-  const { mutate, isLoading } = useMutation<SignInResponse, any, SignInData>(
+  const { mutate, isLoading } = useMutation<AuthResponse, any, SignInData>(
     (data) => handleSignInService(data),
   )
 
@@ -67,7 +67,7 @@ export function SignInScreen() {
             return
           }
           if (result) {
-            handleSaveUserCredentials(result.accessToken, email)
+            handleSaveUserCredentials(result.accessToken, result.user)
           }
         },
       },
@@ -84,7 +84,7 @@ export function SignInScreen() {
     >
       <Center>
         <Text color="white" fontSize="2xl" fontWeight="bold" py="8">
-          Sign In Cryme
+          Sign In
         </Text>
       </Center>
       <VStack space="4">

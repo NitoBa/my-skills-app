@@ -1,5 +1,4 @@
 import { User } from '../types/user'
-import { JWTResponse } from '../types/jwtResponse'
 import {
   createContext,
   ReactNode,
@@ -7,7 +6,6 @@ import {
   useLayoutEffect,
   useState,
 } from 'react'
-import jwtDecoder from 'jwt-decode'
 import {
   getAccessToken,
   saveToken,
@@ -16,7 +14,7 @@ import {
 
 type AuthContextData = {
   user: User | null
-  handleSaveUserCredentials: (accessToken: string, email: string) => void
+  handleSaveUserCredentials: (accessToken: string, user: User) => void
   handleLogout: () => void
   isLoggedIn: 'idle' | 'logged' | 'notLogged'
 }
@@ -30,9 +28,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 
   const handleSaveUserCredentials = useCallback(
-    async (accessToken: string, email: string) => {
+    async (accessToken: string, user: User) => {
       await saveToken(accessToken)
-      setUser({ email })
+      setUser(user)
       setIsLoggedIn('logged')
     },
     [],
@@ -43,8 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await getAccessToken()
       if (response) {
         setIsLoggedIn('logged')
-        const { email } = jwtDecoder<JWTResponse>(response)
-        setUser({ email })
+        // setUser({ email })
       } else {
         setIsLoggedIn('notLogged')
       }

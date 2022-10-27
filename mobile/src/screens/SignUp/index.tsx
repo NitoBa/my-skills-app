@@ -1,5 +1,13 @@
-import { Button } from '@components/Button'
-import { InputText } from '@components/InputText'
+import React, { useContext } from 'react'
+import { Platform } from 'react-native'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
+import { useMutation } from '@tanstack/react-query'
+import * as yup from 'yup'
+import { AuthContext } from '../../contexts/AuthContext'
+import { Button } from '../../components/Button'
+import { InputText } from '../../components/InputText'
+import { Loading } from '../../components/Loading'
 import { useNavigation } from '@react-navigation/native'
 import {
   Center,
@@ -8,16 +16,8 @@ import {
   useToast,
   VStack,
 } from 'native-base'
-import React, { useContext } from 'react'
-import { Platform } from 'react-native'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { Controller, useForm } from 'react-hook-form'
-import { useMutation } from '@tanstack/react-query'
-import { SignUpResponse } from '../../types/signUpResponse'
+import { AuthResponse } from '../../types/authResponse'
 import { handleSignUpService, SignUpData } from '../../services/signUpService'
-import { Loading } from '@components/Loading/Index'
-import { AuthContext } from '@contexts/AuthContext'
 
 type SignUpFormData = {
   email: string
@@ -52,7 +52,7 @@ export function SignUpScreen() {
     resolver: yupResolver(signUpFormSchema),
   })
 
-  const { mutate, isLoading } = useMutation<SignUpResponse, any, SignUpData>(
+  const { mutate, isLoading } = useMutation<AuthResponse, any, SignUpData>(
     (data) => handleSignUpService(data),
   )
 
@@ -72,11 +72,10 @@ export function SignUpScreen() {
             })
             return
           }
-          handleSaveUserCredentials(
-            data?.returnTokenVM.accessToken as string,
-            email,
-          )
-          console.log('data', data)
+
+          if (data) {
+            handleSaveUserCredentials(data.accessToken, data.user)
+          }
         },
       },
     )
@@ -92,7 +91,7 @@ export function SignUpScreen() {
     >
       <Center>
         <Text color="white" fontSize="2xl" fontWeight="bold" py="8">
-          Sign Up Cryme
+          Sign Up
         </Text>
       </Center>
       <VStack space="4">

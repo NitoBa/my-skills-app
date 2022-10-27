@@ -1,4 +1,4 @@
-import { SignInResponse } from '../types/signInResponse'
+import { AuthResponse } from '../types/authResponse'
 import { api } from '../lib/axios'
 
 export type SignInData = {
@@ -7,12 +7,10 @@ export type SignInData = {
 }
 
 export async function handleSignInService({ email, password }: SignInData) {
-  const { data } = await api.post<SignInResponse>('/oauth/token', {
+  const { data } = await api.post<AuthResponse>('/auth/signIn', {
     email,
     password,
   })
-
-  if (data.httpStatusCode !== 200) throw new Error('Error on signIn')
 
   return data
 }
