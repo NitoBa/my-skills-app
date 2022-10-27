@@ -17,6 +17,7 @@ type SkillContextData = {
   handleSubmitNewSkill: (data: { title: string }) => Promise<void>
   handleChangeSkillType: (type: SkillType) => void
   handleDeleteSkill: (id: string) => void
+  handleUpdateSkill: (id: string, value: string) => void
 }
 
 export const SkillContext = createContext<SkillContextData>(
@@ -72,6 +73,18 @@ export function SkillProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
+  const handleUpdateSkill = useCallback(async (id: string, value: string) => {
+    await database.write(async () => {
+      const skillToUpdate = await database
+        .get<SkillModel>(SkillModel.table)
+        .find(id)
+      skillToUpdate.update((skill) => {
+        skill.title = value
+      })
+      getAllSkills()
+    })
+  }, [])
+
   const getAllSkills = useCallback(async () => {
     const allSkills = await database
       .get<SkillModel>(SkillModel.table)
@@ -99,6 +112,7 @@ export function SkillProvider({ children }: { children: ReactNode }) {
         handleSubmitNewSkill,
         handleChangeSkillType,
         handleDeleteSkill,
+        handleUpdateSkill,
         skills,
         skillType,
       }}

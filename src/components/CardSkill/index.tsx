@@ -4,19 +4,36 @@ import { TouchableOpacity } from 'react-native'
 import Feather from '@expo/vector-icons/Feather'
 import { InputText } from '../InputText'
 import { SkillProps } from '../../types/skill'
+import { Controller, useForm } from 'react-hook-form'
 
 type Props = {
   onPressDelete: () => void
+  onHandleEditKill: (value: string) => void
 } & SkillProps
 
-export function CardSkill({ title, type, onPressDelete }: Props) {
+type EditSkillFormData = {
+  newEditSkill: string
+}
+
+export function CardSkill({
+  title,
+  type,
+  onPressDelete,
+  onHandleEditKill,
+}: Props) {
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<EditSkillFormData>()
   const [isEditing, setIsEditing] = useState(false)
 
   function toggleEditSkill() {
     setIsEditing((state) => !state)
   }
 
-  function handleEditSkill() {
+  function handleEditSkill({ newEditSkill }: EditSkillFormData) {
+    onHandleEditKill(newEditSkill)
     toggleEditSkill()
   }
 
@@ -47,11 +64,26 @@ export function CardSkill({ title, type, onPressDelete }: Props) {
         </HStack>
         {isEditing && (
           <VStack space="3">
-            <InputText
-              placeholder="type to edit your skill"
-              bgColor="dark.200"
+            <Controller
+              control={control}
+              name="newEditSkill"
+              rules={{
+                required: {
+                  message: 'Required field',
+                  value: true,
+                },
+              }}
+              render={({ field: { onChange, value } }) => (
+                <InputText
+                  placeholder="type to edit your skill"
+                  bgColor="dark.200"
+                  onChangeText={onChange}
+                  value={value}
+                  errorMessage={errors.newEditSkill?.message}
+                />
+              )}
             />
-            <TouchableOpacity onPress={handleEditSkill}>
+            <TouchableOpacity onPress={handleSubmit(handleEditSkill)}>
               <Box
                 bgColor="green.500"
                 p="2"

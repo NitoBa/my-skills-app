@@ -7,7 +7,8 @@ import Animation from '../../assets/animation.json'
 import { SkillContext } from '../../contexts/SkillContext'
 
 export function SkillsList() {
-  const { skills, handleDeleteSkill } = useContext(SkillContext)
+  const { skills, handleDeleteSkill, handleUpdateSkill } =
+    useContext(SkillContext)
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
@@ -41,6 +42,7 @@ export function SkillsList() {
             title={item.title}
             type={item.type}
             onPressDelete={() => handleDeleteSkill(item.id)}
+            onHandleEditKill={(value) => handleUpdateSkill(item.id, value)}
           />
         </Box>
       )}
