@@ -1,8 +1,15 @@
-import { createContext, ReactNode, useCallback, useState } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useLayoutEffect,
+  useState,
+} from 'react'
+import { useToast } from 'native-base'
+import { Q } from '@nozbe/watermelondb'
 import { SkillProps, SkillType } from '../types/skill'
 import { database } from '../databases'
 import { SkillModel } from '../databases/models/skillModel'
-import { Alert } from 'react-native'
 
 type SkillContextData = {
   skillType: SkillType
@@ -16,26 +23,60 @@ export const SkillContext = createContext<SkillContextData>(
 )
 
 export function SkillProvider({ children }: { children: ReactNode }) {
-  // eslint-disable-next-line no-unused-vars
+  const toast = useToast()
   const [skills, setSkills] = useState<SkillProps[]>([])
   const [skillType, setSkillType] = useState<SkillType>('hard')
 
   const handleSubmitNewSkill = useCallback(
     async (data: { title: string }) => {
       await database.write(async () => {
-        await database.get<SkillModel>(SkillModel.table).create((dataDB) => {
-          dataDB.title = data.title
-          dataDB.type = skillType
+        const newSkillCreated = await database
+          .get<SkillModel>(SkillModel.table)
+          .create((dataDB) => {
+            dataDB.title = data.title
+            dataDB.type = skillType
+          })
+
+        setSkills((state) => [
+          ...state,
+          {
+            id: newSkillCreated.id,
+            title: newSkillCreated.title,
+            type: skillType,
+          },
+        ])
+        toast.show({
+          title: 'Skill added!',
+          backgroundColor: 'green.500',
         })
       })
-
-      Alert.alert('Skill', 'Skill created!')
     },
     [skillType],
   )
   const handleChangeSkillType = useCallback((type: SkillType) => {
     setSkillType(type)
   }, [])
+
+  const getAllSkills = useCallback(async () => {
+    const allSkills = await database
+      .get<SkillModel>(SkillModel.table)
+      .query(Q.where('type', skillType))
+      .fetch()
+
+    setSkills(() => {
+      return allSkills.map((skill) => {
+        return {
+          id: skill.id,
+          type: skill.type as SkillType,
+          title: skill.title,
+        }
+      })
+    })
+  }, [skillType])
+
+  useLayoutEffect(() => {
+    getAllSkills()
+  }, [getAllSkills])
 
   return (
     <SkillContext.Provider

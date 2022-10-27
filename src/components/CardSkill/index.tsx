@@ -5,7 +5,7 @@ import Feather from '@expo/vector-icons/Feather'
 import { InputText } from '../InputText'
 import { SkillProps } from '../../types/skill'
 
-export function CardSkill({ title }: SkillProps) {
+export function CardSkill({ title, type }: SkillProps) {
   const [isEditing, setIsEditing] = useState(false)
 
   function toggleEditSkill() {
@@ -13,7 +13,7 @@ export function CardSkill({ title }: SkillProps) {
   }
 
   function handleEditSkill() {
-    setIsEditing((state) => !state)
+    toggleEditSkill()
   }
 
   return (
@@ -23,6 +23,11 @@ export function CardSkill({ title }: SkillProps) {
           <Text color="white" fontSize="lg" fontWeight="bold" numberOfLines={2}>
             {title}
           </Text>
+          <Box bgColor="green.500" py="1" px="2" rounded="full">
+            <Text color="white" fontWeight="bold">
+              {type}
+            </Text>
+          </Box>
         </HStack>
         <HStack space="3">
           <TouchableOpacity>

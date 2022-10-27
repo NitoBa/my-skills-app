@@ -37,11 +37,17 @@ export function Home() {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<SkillFormData>({
     resolver: yupResolver(skillFormSchema),
   })
   const { handleSubmitNewSkill } = useContext(SkillContext)
+
+  function handleCreateNewSkill(data: SkillFormData) {
+    handleSubmitNewSkill(data)
+    reset()
+  }
 
   return (
     <KeyboardAvoidingView
@@ -58,15 +64,16 @@ export function Home() {
           <Controller
             control={control}
             name="title"
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <InputText
                 placeholder="Type your skill..."
                 onChangeText={onChange}
                 errorMessage={errors.title?.message}
+                value={value}
               />
             )}
           />
-          <TouchableOpacity onPress={handleSubmit(handleSubmitNewSkill)}>
+          <TouchableOpacity onPress={handleSubmit(handleCreateNewSkill)}>
             <Box
               bgColor="dark.100"
               height={52}
