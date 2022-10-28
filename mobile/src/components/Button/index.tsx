@@ -42,6 +42,7 @@ export function Button({
           <Loading color={variant === 'primary' ? 'gray.900' : 'green.500'} />
         ) : (
           <Text
+            fontWeight="medium"
             color={
               variant === 'primary'
                 ? 'white'
