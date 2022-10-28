@@ -35,14 +35,13 @@ export function SkillsList() {
         </Box>
       )}
       keyExtractor={({ id }) => id}
-      renderItem={({ item }) => (
+      renderItem={({ item: { id, title, type } }) => (
         <Box mb="3">
           <CardSkill
-            id={item.id}
-            title={item.title}
-            type={item.type}
-            onPressDelete={() => handleDeleteSkill(item.id)}
-            onHandleEditKill={(value) => handleUpdateSkill(item.id, value)}
+            title={title}
+            type={type}
+            onPressDelete={() => handleDeleteSkill(id)}
+            onHandleEditKill={(value) => handleUpdateSkill(id, value)}
           />
         </Box>
       )}

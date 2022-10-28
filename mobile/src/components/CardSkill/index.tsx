@@ -9,7 +9,7 @@ import { Controller, useForm } from 'react-hook-form'
 type Props = {
   onPressDelete: () => void
   onHandleEditKill: (value: string) => void
-} & SkillProps
+} & Omit<SkillProps, 'id'>
 
 type EditSkillFormData = {
   newEditSkill: string

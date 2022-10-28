@@ -7,7 +7,11 @@ export type SignUpData = {
   password: string
 }
 
-export async function handleSignUpService({ email, password }: SignUpData) {
+export async function handleSignUpService({
+  email,
+  password,
+  name,
+}: SignUpData) {
   const { data } = await api.post<AuthResponse>('/auth/signUp', {
     name,
     email,

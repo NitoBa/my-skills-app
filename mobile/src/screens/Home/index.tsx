@@ -1,5 +1,12 @@
 import React, { useContext } from 'react'
-import { Box, HStack, KeyboardAvoidingView, Text, VStack } from 'native-base'
+import {
+  Box,
+  HStack,
+  Icon,
+  KeyboardAvoidingView,
+  Text,
+  VStack,
+} from 'native-base'
 import { Platform, TouchableOpacity } from 'react-native'
 
 import Feather from '@expo/vector-icons/Feather'
@@ -75,7 +82,7 @@ export function Home() {
               alignItems="center"
               justifyContent="center"
             >
-              <Feather name="plus" color="#FFF" size={24} />
+              <Icon as={Feather} name="plus" color="white" size="lg" />
             </Box>
           </TouchableOpacity>
         </HStack>

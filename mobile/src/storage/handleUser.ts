@@ -6,9 +6,7 @@ export async function getUserFromLocalStorage(): Promise<User | null> {
   try {
     const user = await AsyncStorage.getItem(USER)
 
-    if (!user) {
-      return null
-    }
+    if (!user) return null
 
     return JSON.parse(user) as User
   } catch (error) {
