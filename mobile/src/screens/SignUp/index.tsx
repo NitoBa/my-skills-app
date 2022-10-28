@@ -7,7 +7,6 @@ import * as yup from 'yup'
 import { AuthContext } from '../../contexts/AuthContext'
 import { Button } from '../../components/Button'
 import { InputText } from '../../components/InputText'
-import { Loading } from '../../components/Loading'
 import { useNavigation } from '@react-navigation/native'
 import {
   Center,
@@ -42,8 +41,6 @@ const signUpFormSchema = yup.object({
     .oneOf([yup.ref('password'), null], 'Passwords not match'),
 })
 
-// TODO: it should be able to create a new account to the user
-// TODO: it should be able to login a user on application
 export function SignUpScreen() {
   const { handleSaveUserCredentials } = useContext(AuthContext)
   const toast = useToast()
@@ -61,9 +58,10 @@ export function SignUpScreen() {
     (data) => handleSignUpService(data),
   )
 
-  async function handleSignUp({ email, password }: SignUpFormData) {
+  async function handleSignUp({ name, email, password }: SignUpFormData) {
     mutate(
       {
+        name,
         email,
         password,
       },
@@ -151,20 +149,17 @@ export function SignUpScreen() {
         />
 
         <VStack space="3" mt="3">
-          {isLoading ? (
-            <Center h="105">
-              <Loading />
-            </Center>
-          ) : (
-            <>
-              <Button title="Register" onPress={handleSubmit(handleSignUp)} />
-              <Button
-                title="Login"
-                variant="secondary"
-                onPress={() => navigation.goBack()}
-              />
-            </>
-          )}
+          <Button
+            title="Register"
+            onPress={handleSubmit(handleSignUp)}
+            loading={isLoading}
+          />
+          <Button
+            disabled={isLoading}
+            title="Login"
+            variant="secondary"
+            onPress={() => navigation.goBack()}
+          />
         </VStack>
       </VStack>
     </KeyboardAvoidingView>

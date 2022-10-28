@@ -16,7 +16,6 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
-import { Loading } from '../../components/Loading'
 import { AuthResponse } from '../../types/authResponse'
 
 type SignInFormData = {
@@ -114,20 +113,17 @@ export function SignInScreen() {
         />
 
         <VStack space="3" mt="3">
-          {isLoading ? (
-            <Center h="105">
-              <Loading />
-            </Center>
-          ) : (
-            <>
-              <Button title="Login" onPress={handleSubmit(handleSignIn)} />
-              <Button
-                title="Create Account"
-                variant="secondary"
-                onPress={() => navigation.navigate('signUp')}
-              />
-            </>
-          )}
+          <Button
+            title="Login"
+            onPress={handleSubmit(handleSignIn)}
+            loading={isLoading}
+          />
+          <Button
+            disabled={isLoading}
+            title="Create Account"
+            variant="secondary"
+            onPress={() => navigation.navigate('signUp')}
+          />
         </VStack>
       </VStack>
     </KeyboardAvoidingView>
