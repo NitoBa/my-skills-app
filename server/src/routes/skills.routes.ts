@@ -11,7 +11,7 @@ const controller = new SkillsController(service)
 skillRoutes.get('/sync/pull/:lastPulledAt', ensureAuthenticated, (req, res) =>
   controller.pull(req, res),
 )
-skillRoutes.post('/sync/pull/', ensureAuthenticated, (req, res) =>
+skillRoutes.post('/sync/push/', ensureAuthenticated, (req, res) =>
   controller.push(req, res),
 )
 
