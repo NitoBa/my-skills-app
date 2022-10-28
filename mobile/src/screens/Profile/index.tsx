@@ -1,10 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { Box, VStack, Icon, Text, Modal } from 'native-base'
+import NetInfo from '@react-native-community/netinfo'
 import { Feather } from '@expo/vector-icons'
 import { Header } from '../../components/Header'
 import { InputText } from '../../components/InputText'
 import { Button } from '../../components/Button'
 import { AuthContext } from '../../contexts/AuthContext'
+import { Alert } from 'react-native'
 
 export function Profile() {
   const [isOpenModal, setIsModalOpen] = useState(false)
@@ -12,6 +14,14 @@ export function Profile() {
 
   function handleSignOut() {
     setIsModalOpen(true)
+  }
+
+  async function handleSynchronizeData() {
+    const response = await NetInfo.fetch()
+
+    if (!response.isConnected) {
+      Alert.alert('Ops', 'Verify your connection with internet')
+    }
   }
 
   return (
@@ -57,8 +67,14 @@ export function Profile() {
             {user?.name}
           </Text>
           <InputText value={user?.email} isDisabled />
-          <Button title="Synchronize" onPress={() => {}} />
-          <Button title="Logout" variant="secondary" onPress={handleSignOut} />
+          <VStack w="full" space="3" mt="3">
+            <Button title="Synchronize" onPress={handleSynchronizeData} />
+            <Button
+              title="Logout"
+              variant="secondary"
+              onPress={handleSignOut}
+            />
+          </VStack>
         </VStack>
       </Box>
     </>

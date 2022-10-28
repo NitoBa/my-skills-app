@@ -1,31 +1,24 @@
 import { synchronize } from '@nozbe/watermelondb/sync'
+import { api } from 'src/lib/axios'
 import { database } from '..'
 
 export async function mySync() {
   await synchronize({
     database,
-    pullChanges: async ({ lastPulledAt, schemaVersion, migration }) => {
-      const urlParams = `last_pulled_at=${lastPulledAt}&schema_version=${schemaVersion}&migration=${encodeURIComponent(
-        JSON.stringify(migration),
-      )}`
-      const response = await fetch(`https://my.backend/sync?${urlParams}`)
-      if (!response.ok) {
-        throw new Error(await response.text())
+    pullChanges: async ({ lastPulledAt }) => {
+      try {
+        const { data } = await api.get(`/skills/sync/pull/${lastPulledAt || 0}`)
+        return { changes: data.changes, timestamp: data.timestamp }
+      } catch (error) {
+        throw new Error('Fail to synchronize data')
       }
-
-      const { changes, timestamp } = await response.json()
-      return { changes: {}, timestamp }
     },
-    pushChanges: async ({ changes, lastPulledAt }) => {
-      const response = await fetch(
-        `https://my.backend/sync?last_pulled_at=${lastPulledAt}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(changes),
-        },
-      )
-      if (!response.ok) {
-        throw new Error(await response.text())
+    pushChanges: async ({ changes }) => {
+      try {
+        const skills = changes.skills
+        await api.post('/skills/sync/push', skills)
+      } catch (error) {
+        throw new Error('Fail to synchronize data')
       }
     },
     migrationsEnabledAtVersion: 1,
