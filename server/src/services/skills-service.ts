@@ -53,6 +53,7 @@ export class SkillService {
         where: { id: skill.id },
         data: {
           title: skill.title,
+          updatedAt: skill.updatedAt,
         },
       })
     }
