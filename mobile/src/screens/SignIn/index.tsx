@@ -81,7 +81,7 @@ export function SignInScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <Center py="8">
-        <Text color="white" fontSize="2xl" fontWeight="bold">
+        <Text color="white" fontSize="4xl" fontWeight="bold">
           Sign In
         </Text>
       </Center>
@@ -94,6 +94,7 @@ export function SignInScreen() {
               placeholder="Enter with your email"
               keyboardType="email-address"
               autoCapitalize="none"
+              autoCorrect={false}
               onChangeText={onChange}
               errorMessage={errors.email?.message}
             />

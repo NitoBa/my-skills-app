@@ -93,7 +93,7 @@ export function SignUpScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <Center>
-        <Text color="white" fontSize="2xl" fontWeight="bold" py="8">
+        <Text color="white" fontSize="4xl" fontWeight="bold" py="8">
           Sign Up
         </Text>
       </Center>
@@ -117,6 +117,7 @@ export function SignUpScreen() {
               placeholder="Enter with your email"
               keyboardType="email-address"
               autoCapitalize="none"
+              autoCorrect={false}
               onChangeText={onChange}
               errorMessage={errors.email?.message}
             />
