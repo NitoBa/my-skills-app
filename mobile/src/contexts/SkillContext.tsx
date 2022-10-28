@@ -29,6 +29,23 @@ export function SkillProvider({ children }: { children: ReactNode }) {
   const [skills, setSkills] = useState<SkillProps[]>([])
   const [skillType, setSkillType] = useState<SkillType>('hard')
 
+  const getAllSkills = useCallback(async () => {
+    const allSkills = await database
+      .get<SkillModel>(SkillModel.table)
+      .query(Q.where('type', skillType))
+      .fetch()
+
+    setSkills(() => {
+      return allSkills.map((skill) => {
+        return {
+          id: skill.id,
+          type: skill.type as SkillType,
+          title: skill.title,
+        }
+      })
+    })
+  }, [skillType])
+
   const handleSubmitNewSkill = useCallback(
     async (data: { title: string }) => {
       await database.write(async () => {
@@ -59,48 +76,37 @@ export function SkillProvider({ children }: { children: ReactNode }) {
     setSkillType(type)
   }, [])
 
-  const handleDeleteSkill = useCallback(async (id: string) => {
-    await database.write(async () => {
-      const skill = await database.get<SkillModel>(SkillModel.table).find(id)
-      await skill.destroyPermanently()
-      setSkills((state) => {
-        return state.filter((skill) => skill.id !== id)
+  const handleDeleteSkill = useCallback(
+    async (id: string) => {
+      await database.write(async () => {
+        const skill = await database.get<SkillModel>(SkillModel.table).find(id)
+        await skill.destroyPermanently()
+        setSkills((state) => {
+          return state.filter((skill) => skill.id !== id)
+        })
+        toast.show({
+          title: 'Skill deleted',
+          bgColor: 'green.500',
+        })
       })
-      toast.show({
-        title: 'Skill deleted',
-        bgColor: 'green.500',
-      })
-    })
-  }, [])
+    },
+    [toast],
+  )
 
-  const handleUpdateSkill = useCallback(async (id: string, value: string) => {
-    await database.write(async () => {
-      const skillToUpdate = await database
-        .get<SkillModel>(SkillModel.table)
-        .find(id)
-      skillToUpdate.update((skill) => {
-        skill.title = value
+  const handleUpdateSkill = useCallback(
+    async (id: string, value: string) => {
+      await database.write(async () => {
+        const skillToUpdate = await database
+          .get<SkillModel>(SkillModel.table)
+          .find(id)
+        skillToUpdate.update((skill) => {
+          skill.title = value
+        })
+        getAllSkills()
       })
-      getAllSkills()
-    })
-  }, [])
-
-  const getAllSkills = useCallback(async () => {
-    const allSkills = await database
-      .get<SkillModel>(SkillModel.table)
-      .query(Q.where('type', skillType))
-      .fetch()
-
-    setSkills(() => {
-      return allSkills.map((skill) => {
-        return {
-          id: skill.id,
-          type: skill.type as SkillType,
-          title: skill.title,
-        }
-      })
-    })
-  }, [skillType])
+    },
+    [getAllSkills],
+  )
 
   useLayoutEffect(() => {
     getAllSkills()

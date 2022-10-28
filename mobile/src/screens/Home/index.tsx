@@ -7,7 +7,7 @@ import {
   Text,
   VStack,
 } from 'native-base'
-import { Platform, TouchableOpacity } from 'react-native'
+import { Keyboard, TouchableOpacity } from 'react-native'
 
 import Feather from '@expo/vector-icons/Feather'
 
@@ -49,13 +49,11 @@ export function Home() {
   function handleCreateNewSkill(data: SkillFormData) {
     handleSubmitNewSkill(data)
     reset()
+    Keyboard.dismiss()
   }
 
   return (
-    <KeyboardAvoidingView
-      flex="1"
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <KeyboardAvoidingView behavior="padding" flex="1">
       <Box safeArea bgColor="dark.50" flex={1} px={4}>
         <Header title="Skill App" />
         <HStack alignItems="flex-start" space="2" my="4">
@@ -94,6 +92,7 @@ export function Home() {
           <SkillsList />
         </VStack>
       </Box>
+      {/* </ScrollView> */}
     </KeyboardAvoidingView>
   )
 }

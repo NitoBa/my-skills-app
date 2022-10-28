@@ -12,7 +12,7 @@ export function Header({ title }: Props) {
   const { name } = useRoute()
 
   return (
-    <HStack alignItems="center" justifyContent="space-between">
+    <HStack alignItems="center" justifyContent="space-between" mt="3">
       {name === 'home' && (
         <>
           <Text color="white" fontSize="2xl" fontWeight={700}>
