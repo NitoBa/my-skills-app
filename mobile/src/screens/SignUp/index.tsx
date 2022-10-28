@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { Platform } from 'react-native'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
@@ -89,8 +88,8 @@ export function SignUpScreen() {
       flex="1"
       bgColor="gray.900"
       px="4"
+      behavior={'height'}
       justifyContent="center"
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <Center>
         <Text color="white" fontSize="4xl" fontWeight="bold" py="8">
@@ -103,6 +102,7 @@ export function SignUpScreen() {
           control={control}
           render={({ field: { onChange } }) => (
             <InputText
+              leftIconName="edit-2"
               placeholder="Enter with your name"
               onChangeText={onChange}
               errorMessage={errors.name?.message}
@@ -114,6 +114,7 @@ export function SignUpScreen() {
           control={control}
           render={({ field: { onChange } }) => (
             <InputText
+              leftIconName="mail"
               placeholder="Enter with your email"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -128,8 +129,9 @@ export function SignUpScreen() {
           control={control}
           render={({ field: { onChange } }) => (
             <InputText
+              leftIconName="lock"
               placeholder="Enter with your password"
-              type="password"
+              secureTextEntry
               onChangeText={onChange}
               errorMessage={errors.password?.message}
             />
@@ -141,8 +143,9 @@ export function SignUpScreen() {
           control={control}
           render={({ field: { onChange } }) => (
             <InputText
+              leftIconName="lock"
               placeholder="Confirm your password"
-              type="password"
+              secureTextEntry
               onChangeText={onChange}
               errorMessage={errors.confirmPassword?.message}
             />

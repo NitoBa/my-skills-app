@@ -14,7 +14,7 @@ export async function mySync() {
       }
 
       const { changes, timestamp } = await response.json()
-      return { changes, timestamp }
+      return { changes: {}, timestamp }
     },
     pushChanges: async ({ changes, lastPulledAt }) => {
       const response = await fetch(

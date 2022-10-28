@@ -92,6 +92,7 @@ export function SignInScreen() {
           render={({ field: { onChange } }) => (
             <InputText
               placeholder="Enter with your email"
+              leftIconName="mail"
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
@@ -105,8 +106,9 @@ export function SignInScreen() {
           control={control}
           render={({ field: { onChange } }) => (
             <InputText
+              leftIconName="lock"
               placeholder="Enter with your password"
-              type="password"
+              secureTextEntry
               onChangeText={onChange}
               errorMessage={errors.password?.message}
             />
