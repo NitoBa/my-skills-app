@@ -8,13 +8,9 @@ const authController = new AuthController(userService)
 
 const authRoutes = Router()
 
-authRoutes.post('/auth/signUp', (req, res) =>
-  authController.handleSignUp(req, res),
-)
-authRoutes.post('/auth/signIn', (req, res) =>
-  authController.handleSignIn(req, res),
-)
-authRoutes.get('/auth/me', ensureAuthenticated, (req, res) =>
+authRoutes.post('/signUp', (req, res) => authController.handleSignUp(req, res))
+authRoutes.post('/signIn', (req, res) => authController.handleSignIn(req, res))
+authRoutes.get('/me', ensureAuthenticated, (req, res) =>
   authController.me(req, res),
 )
 

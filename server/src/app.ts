@@ -6,8 +6,8 @@ dotenv.config()
 
 const app = express()
 app.use(express.json())
-app.use(authRoutes)
-app.use(skillRoutes)
+app.use('/auth', authRoutes)
+app.use('/skills', skillRoutes)
 
 const PORT = 3333
 
