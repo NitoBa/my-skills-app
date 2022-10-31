@@ -10,30 +10,20 @@ type Skills = {
 
 export class SkillService {
   async listByUpdated(lastPulledAt: number) {
-    const skills = await prisma.skill.findMany({
-      where: {
-        updatedAt: {
-          gte: new Date(lastPulledAt),
-        },
-      },
-    })
+    const skills =
+      await prisma.$queryRaw`SELECT * FROM skills WHERE updatedAt >= ${lastPulledAt}`
 
     return skills
   }
 
   async listByCreated(lastPulledAt: number) {
-    const skills = await prisma.skill.findMany({
-      where: {
-        createdAt: {
-          gte: new Date(lastPulledAt),
-        },
-      },
-    })
+    const skills =
+      await prisma.$queryRaw`SELECT * FROM skills WHERE createdAt >= ${lastPulledAt} AND updatedAt = createdAt`
 
     return skills
   }
 
-  async syncCreateSkills(skills: Skills[]): Promise<void> {
+  async syncCreateSkills(skills: Skills[], id: string): Promise<void> {
     for await (const skill of skills) {
       await prisma.skill.create({
         data: {
@@ -42,6 +32,11 @@ export class SkillService {
           type: skill.type,
           createdAt: skill.createdAt,
           updatedAt: skill.updatedAt,
+          User: {
+            connect: {
+              id,
+            },
+          },
         },
       })
     }
@@ -59,10 +54,10 @@ export class SkillService {
     }
   }
 
-  async syncDeletedSkills(skills: Skills[]): Promise<void> {
-    for await (const skill of skills) {
+  async syncDeletedSkills(ids: string[]): Promise<void> {
+    for await (const id of ids) {
       await prisma.skill.delete({
-        where: { id: skill.id },
+        where: { id },
       })
     }
   }

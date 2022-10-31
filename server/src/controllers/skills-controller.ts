@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-constructor */
 import { Request, Response } from 'express'
 import { SkillService } from '../services/skills-service'
+import { addSeconds } from 'date-fns'
 
 export class SkillsController {
   constructor(private readonly skillsService: SkillService) {}
@@ -21,21 +22,28 @@ export class SkillsController {
       changes: {
         skills,
       },
-      timestamp: new Date().getTime(),
+      timestamp: addSeconds(new Date(), 5).getTime(),
     })
   }
 
   async push(req: Request, res: Response) {
-    const { created, updated, deleted } = req.body
+    const {
+      skills: { created, updated, deleted },
+      userId,
+    } = req.body
+
+    console.log(created)
+    console.log(updated)
+    console.log(deleted)
 
     if (created.length > 0) {
-      await this.skillsService.syncCreateSkills(created)
+      await this.skillsService.syncCreateSkills(created, userId)
     }
     if (updated.length > 0) {
-      await this.skillsService.syncUpdateSkills(created)
+      await this.skillsService.syncUpdateSkills(updated)
     }
     if (deleted.length > 0) {
-      await this.skillsService.syncDeletedSkills(created)
+      await this.skillsService.syncDeletedSkills(deleted)
     }
 
     return res.status(201)

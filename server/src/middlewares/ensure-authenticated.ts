@@ -4,6 +4,7 @@ import { verify } from 'jsonwebtoken'
 
 type TokenPayload = {
   email: string
+  sub: string
 }
 
 export const ensureAuthenticated = async (
@@ -27,12 +28,12 @@ export const ensureAuthenticated = async (
   }
 
   try {
-    const { email } = verify(
+    const { sub } = verify(
       accessToken,
       process.env.SECRET_KEY as string,
     ) as TokenPayload
 
-    req.body.email = email
+    req.body.userId = sub
     next()
   } catch (error) {
     return res.status(401).json({ error: 'Invalid token' })
