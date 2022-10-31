@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-constructor */
+import { addMilliseconds } from 'date-fns'
 import { Request, Response } from 'express'
 import { SkillService } from '../services/skills-service'
-import { addSeconds } from 'date-fns'
 
 export class SkillsController {
   constructor(private readonly skillsService: SkillService) {}
@@ -22,7 +22,7 @@ export class SkillsController {
       changes: {
         skills,
       },
-      timestamp: addSeconds(new Date(), 5).getTime(),
+      timestamp: addMilliseconds(Date.now(), 200).getTime(),
     })
   }
 

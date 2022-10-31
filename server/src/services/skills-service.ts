@@ -11,7 +11,7 @@ type Skills = {
 export class SkillService {
   async listByUpdated(lastPulledAt: number) {
     const skills =
-      await prisma.$queryRaw`SELECT * FROM skills WHERE updatedAt >= ${lastPulledAt}`
+      await prisma.$queryRaw`SELECT * FROM skills WHERE updatedAt >= ${lastPulledAt} AND updatedAt != createdAt`
 
     return skills
   }
@@ -25,18 +25,24 @@ export class SkillService {
 
   async syncCreateSkills(skills: Skills[], id: string): Promise<void> {
     for await (const skill of skills) {
-      await prisma.skill.create({
-        data: {
-          id: skill.id,
+      await prisma.skill.upsert({
+        create: {
+          watermelon_id: skill.id,
           title: skill.title,
           type: skill.type,
           createdAt: skill.createdAt,
           updatedAt: skill.updatedAt,
-          User: {
+          user: {
             connect: {
               id,
             },
           },
+        },
+        where: {
+          watermelon_id: skill.id,
+        },
+        update: {
+          title: skill.title,
         },
       })
     }
@@ -57,7 +63,7 @@ export class SkillService {
   async syncDeletedSkills(ids: string[]): Promise<void> {
     for await (const id of ids) {
       await prisma.skill.delete({
-        where: { id },
+        where: { watermelon_id: id },
       })
     }
   }
