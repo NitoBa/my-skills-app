@@ -70,7 +70,7 @@ export function SkillProvider({ children }: { children: ReactNode }) {
         })
       })
     },
-    [skillType],
+    [skillType, toast],
   )
   const handleChangeSkillType = useCallback((type: SkillType) => {
     setSkillType(type)
@@ -93,20 +93,25 @@ export function SkillProvider({ children }: { children: ReactNode }) {
     [toast],
   )
 
-  const handleUpdateSkill = useCallback(
-    async (id: string, value: string) => {
-      await database.write(async () => {
-        const skillToUpdate = await database
-          .get<SkillModel>(SkillModel.table)
-          .find(id)
-        skillToUpdate.update((skill) => {
-          skill.title = value
-        })
-        getAllSkills()
+  const handleUpdateSkill = useCallback(async (id: string, value: string) => {
+    await database.write(async () => {
+      const skillToUpdate = await database
+        .get<SkillModel>(SkillModel.table)
+        .find(id)
+      const skillUpdated = await skillToUpdate.update((skill) => {
+        skill.title = value
       })
-    },
-    [getAllSkills],
-  )
+      setSkills((state) => {
+        return state.map((skill) => {
+          if (skill.id === skillUpdated.id) {
+            skill.title = skillUpdated.title
+          }
+
+          return skill
+        })
+      })
+    })
+  }, [])
 
   useLayoutEffect(() => {
     getAllSkills()

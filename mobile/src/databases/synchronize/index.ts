@@ -8,11 +8,10 @@ export async function mySync() {
       database,
       pullChanges: async ({ lastPulledAt }) => {
         try {
-          const { data } = await api.get(
-            `/skills/sync/pull/${lastPulledAt || 0}`,
-          )
-          resolve()
-          return { changes: data.changes, timestamp: data.timestamp }
+          const {
+            data: { changes, timestamp },
+          } = await api.get(`/skills/sync/pull/${lastPulledAt || 0}`)
+          return { changes, timestamp }
         } catch (error) {
           console.log('Pull error', error)
           reject(new Error('Fail to synchronize data'))
@@ -33,7 +32,6 @@ export async function mySync() {
           throw new Error('Fail to synchronize data')
         }
       },
-      migrationsEnabledAtVersion: 1,
     })
   })
 }

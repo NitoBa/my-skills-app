@@ -28,7 +28,6 @@ export function InputText({
         variant="unstyled"
         _focus={{
           borderColor: 'green.500',
-          borderWidth: 1,
         }}
         InputLeftElement={
           leftIconName && <Icon as={Feather} name={leftIconName} ml="3" />
