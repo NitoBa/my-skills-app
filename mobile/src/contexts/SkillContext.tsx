@@ -80,7 +80,7 @@ export function SkillProvider({ children }: { children: ReactNode }) {
     async (id: string) => {
       await database.write(async () => {
         const skill = await database.get<SkillModel>(SkillModel.table).find(id)
-        await skill.destroyPermanently()
+        await skill.markAsDeleted()
         setSkills((state) => {
           return state.filter((skill) => skill.id !== id)
         })

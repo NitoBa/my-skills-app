@@ -16,6 +16,7 @@ import {
   getUserFromLocalStorage,
   setUserToLocalStorage,
 } from '../storage/handleUser'
+import { api } from '../lib/axios'
 
 type AuthContextData = {
   user: User | null
@@ -34,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleSaveUserCredentials = useCallback(
     async (accessToken: string, user: User) => {
+      api.defaults.headers.authorization = 'Bearer ' + accessToken
       await saveToken(accessToken)
       setUser(user)
       setIsLoggedIn('logged')

@@ -1,26 +1,46 @@
 import React, { useContext, useState } from 'react'
-import { Box, VStack, Icon, Text, Modal } from 'native-base'
+import { Box, VStack, Icon, Text, Modal, useToast } from 'native-base'
 import NetInfo from '@react-native-community/netinfo'
 import { Feather } from '@expo/vector-icons'
 import { Header } from '../../components/Header'
 import { InputText } from '../../components/InputText'
 import { Button } from '../../components/Button'
 import { AuthContext } from '../../contexts/AuthContext'
-import { Alert } from 'react-native'
+import { mySync } from '../../databases/synchronize'
 
 export function Profile() {
   const [isOpenModal, setIsModalOpen] = useState(false)
+  const [loadingSync, setIsLoadingSync] = useState(false)
   const { user, handleLogout } = useContext(AuthContext)
+  const toast = useToast()
 
   function handleSignOut() {
     setIsModalOpen(true)
   }
 
   async function handleSynchronizeData() {
-    const response = await NetInfo.fetch()
+    try {
+      setIsLoadingSync(true)
+      const response = await NetInfo.fetch()
 
-    if (!response.isConnected) {
-      Alert.alert('Ops', 'Verify your connection with internet')
+      if (!response.isConnected) {
+        toast.show({
+          title: 'Verify your connection with internet',
+          bgColor: 'danger.500',
+        })
+        return
+      }
+
+      await mySync()
+
+      toast.show({
+        title: 'Great, your data was successfully synced',
+        bgColor: 'success.500',
+      })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoadingSync(false)
     }
   }
 
@@ -68,7 +88,11 @@ export function Profile() {
           </Text>
           <InputText value={user?.email} isDisabled />
           <VStack w="full" space="3" mt="3">
-            <Button title="Synchronize" onPress={handleSynchronizeData} />
+            <Button
+              title="Synchronize"
+              onPress={handleSynchronizeData}
+              loading={loadingSync}
+            />
             <Button
               title="Logout"
               variant="secondary"
