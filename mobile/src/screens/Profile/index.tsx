@@ -37,9 +37,9 @@ export function Profile() {
         title: 'Great, your data was successfully synced',
         bgColor: 'success.500',
       })
+      setIsLoadingSync(false)
     } catch (error) {
       console.log(error)
-    } finally {
       setIsLoadingSync(false)
     }
   }

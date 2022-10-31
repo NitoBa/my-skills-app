@@ -1,3 +1,4 @@
+import { Skill } from '@prisma/client'
 import { prisma } from '../lib/prisma'
 
 type Skills = {
@@ -11,9 +12,12 @@ type Skills = {
 export class SkillService {
   async listByUpdated(lastPulledAt: number) {
     const skills =
-      await prisma.$queryRaw`SELECT * FROM skills WHERE updatedAt >= ${lastPulledAt} AND updatedAt != createdAt`
+      (await prisma.$queryRaw`SELECT * FROM skills WHERE updatedAt >= ${lastPulledAt} AND updatedAt != createdAt`) as Skill[]
 
-    return skills
+    return skills.map((skill) => ({
+      ...skill,
+      id: skill.watermelon_id,
+    }))
   }
 
   async listByCreated(lastPulledAt: number) {
