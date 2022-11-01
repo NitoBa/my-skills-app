@@ -1,7 +1,7 @@
 export type SkillType = 'hard' | 'soft'
 
 export type SkillProps = {
-  id: string
+  _id: string
   title: string
   type: SkillType
 }

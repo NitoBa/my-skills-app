@@ -6,10 +6,9 @@ import {
   useState,
 } from 'react'
 import { useToast } from 'native-base'
-import { Q } from '@nozbe/watermelondb'
+import uuid from 'react-native-uuid'
 import { SkillProps, SkillType } from '../types/skill'
-import { database } from '../databases'
-import { SkillModel } from '../databases/models/skillModel'
+import { getRealm } from '../database'
 
 type SkillContextData = {
   skillType: SkillType
@@ -30,45 +29,50 @@ export function SkillProvider({ children }: { children: ReactNode }) {
   const [skillType, setSkillType] = useState<SkillType>('hard')
 
   const getAllSkills = useCallback(async () => {
-    const allSkills = await database
-      .get<SkillModel>(SkillModel.table)
-      .query(Q.where('type', skillType))
-      .fetch()
+    const realm = await getRealm()
+    try {
+      const allSkills = realm
+        .objects<SkillProps[]>('Skills')
+        .filtered(`type = '${skillType}'`)
+        .toJSON() as SkillProps[]
 
-    setSkills(() => {
-      return allSkills.map((skill) => {
-        return {
-          id: skill.id,
-          type: skill.type as SkillType,
-          title: skill.title,
-        }
-      })
-    })
+      setSkills(allSkills)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      realm.close()
+    }
   }, [skillType])
 
   const handleSubmitNewSkill = useCallback(
     async (data: { title: string }) => {
-      await database.action(async () => {
-        const newSkillCreated = await database
-          .get<SkillModel>(SkillModel.table)
-          .create((dataDB) => {
-            dataDB.title = data.title
-            dataDB.type = skillType
+      const realm = await getRealm()
+      try {
+        await realm.write(async () => {
+          const newSkillCreated = realm.create<SkillProps>('Skills', {
+            _id: uuid.v4() as string,
+            title: data.title,
+            type: skillType,
           })
 
-        setSkills((state) => [
-          ...state,
-          {
-            id: newSkillCreated.id,
-            title: newSkillCreated.title,
-            type: skillType,
-          },
-        ])
-        toast.show({
-          title: 'Skill added!',
-          backgroundColor: 'green.500',
+          setSkills((state) => [
+            ...state,
+            {
+              _id: newSkillCreated._id,
+              title: newSkillCreated.title,
+              type: skillType,
+            },
+          ])
+          toast.show({
+            title: 'Skill added!',
+            backgroundColor: 'green.500',
+          })
         })
-      })
+      } catch (error) {
+        console.log(error)
+      } finally {
+        realm.close()
+      }
     },
     [skillType, toast],
   )
@@ -78,39 +82,50 @@ export function SkillProvider({ children }: { children: ReactNode }) {
 
   const handleDeleteSkill = useCallback(
     async (id: string) => {
-      await database.action(async () => {
-        const skill = await database.get<SkillModel>(SkillModel.table).find(id)
-        await skill.markAsDeleted()
-        setSkills((state) => {
-          return state.filter((skill) => skill.id !== id)
+      const realm = await getRealm()
+      try {
+        const skill = realm.objectForPrimaryKey<SkillProps>('Skills', id)
+        realm.write(() => {
+          realm.delete(skill)
+          setSkills((state) => {
+            return state.filter((skill) => skill._id !== id)
+          })
+          toast.show({
+            title: 'Skill deleted',
+            bgColor: 'green.500',
+          })
         })
-        toast.show({
-          title: 'Skill deleted',
-          bgColor: 'green.500',
-        })
-      })
+      } catch (error) {
+        console.log(error)
+      } finally {
+        realm.close()
+      }
     },
     [toast],
   )
 
   const handleUpdateSkill = useCallback(async (id: string, value: string) => {
-    await database.action(async () => {
-      const skillToUpdate = await database
-        .get<SkillModel>(SkillModel.table)
-        .find(id)
-      const skillUpdated = await skillToUpdate.update((skill) => {
-        skill.title = value
-      })
-      setSkills((state) => {
-        return state.map((skill) => {
-          if (skill.id === skillUpdated.id) {
-            skill.title = skillUpdated.title
-          }
+    const realm = await getRealm()
+    try {
+      const skillToUpdate = realm.objectForPrimaryKey<SkillProps>('Skills', id)
+      realm.write(() => {
+        skillToUpdate.title = value
 
-          return skill
+        setSkills((state) => {
+          return state.map((skill) => {
+            if (skill._id === skillToUpdate._id) {
+              skill.title = value
+            }
+
+            return skill
+          })
         })
       })
-    })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      realm.close()
+    }
   }, [])
 
   useLayoutEffect(() => {

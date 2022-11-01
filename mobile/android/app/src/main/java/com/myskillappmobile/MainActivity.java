@@ -1,4 +1,4 @@
-package com.offlineapp;
+package com.myskillappmobile;
 
 import android.os.Build;
 import android.os.Bundle;

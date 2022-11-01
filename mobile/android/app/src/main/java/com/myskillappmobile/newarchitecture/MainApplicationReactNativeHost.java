@@ -1,4 +1,4 @@
-package com.offlineapp.newarchitecture;
+package com.myskillappmobile.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -20,9 +20,9 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.offlineapp.BuildConfig;
-import com.offlineapp.newarchitecture.components.MainComponentsRegistry;
-import com.offlineapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.myskillappmobile.BuildConfig;
+import com.myskillappmobile.newarchitecture.components.MainComponentsRegistry;
+import com.myskillappmobile.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,11 +1,4 @@
 {
-    "extends": "expo/tsconfig.base",
-    "compilerOptions": {
-      "strict": true,
-      "strictPropertyInitialization": false,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "baseUrl": "./",
-    }
+  "compilerOptions": {},
+  "extends": "expo/tsconfig.base"
 }
-  

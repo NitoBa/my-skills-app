@@ -1,15 +1,11 @@
 {
   "expo": {
-    "name": "offline-app",
-    "slug": "offline-app",
+    "name": "my-skill-app-mobile",
+    "slug": "my-skill-app-mobile",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "entitlements": {
-        "com.apple.developer.networking.wifi-info": true
-      }
-    }
+    "jsEngine": "hermes"
   }
 }

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "offlineapp.app"
-               BlueprintName = "offlineapp"
-               ReferencedContainer = "container:offlineapp.xcodeproj">
+               BuildableName = "myskillappmobile.app"
+               BlueprintName = "myskillappmobile"
+               ReferencedContainer = "container:myskillappmobile.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "offlineappTests.xctest"
-               BlueprintName = "offlineappTests"
-               ReferencedContainer = "container:offlineapp.xcodeproj">
+               BuildableName = "myskillappmobileTests.xctest"
+               BlueprintName = "myskillappmobileTests"
+               ReferencedContainer = "container:myskillappmobile.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "offlineapp.app"
-            BlueprintName = "offlineapp"
-            ReferencedContainer = "container:offlineapp.xcodeproj">
+            BuildableName = "myskillappmobile.app"
+            BlueprintName = "myskillappmobile"
+            ReferencedContainer = "container:myskillappmobile.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "offlineapp.app"
-            BlueprintName = "offlineapp"
-            ReferencedContainer = "container:offlineapp.xcodeproj">
+            BuildableName = "myskillappmobile.app"
+            BlueprintName = "myskillappmobile"
+            ReferencedContainer = "container:myskillappmobile.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

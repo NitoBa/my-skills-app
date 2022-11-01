@@ -1,4 +1,4 @@
-package com.offlineapp.newarchitecture.components;
+package com.myskillappmobile.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;
