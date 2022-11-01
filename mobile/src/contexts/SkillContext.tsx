@@ -48,7 +48,7 @@ export function SkillProvider({ children }: { children: ReactNode }) {
 
   const handleSubmitNewSkill = useCallback(
     async (data: { title: string }) => {
-      await database.write(async () => {
+      await database.action(async () => {
         const newSkillCreated = await database
           .get<SkillModel>(SkillModel.table)
           .create((dataDB) => {
@@ -78,7 +78,7 @@ export function SkillProvider({ children }: { children: ReactNode }) {
 
   const handleDeleteSkill = useCallback(
     async (id: string) => {
-      await database.write(async () => {
+      await database.action(async () => {
         const skill = await database.get<SkillModel>(SkillModel.table).find(id)
         await skill.markAsDeleted()
         setSkills((state) => {
@@ -94,7 +94,7 @@ export function SkillProvider({ children }: { children: ReactNode }) {
   )
 
   const handleUpdateSkill = useCallback(async (id: string, value: string) => {
-    await database.write(async () => {
+    await database.action(async () => {
       const skillToUpdate = await database
         .get<SkillModel>(SkillModel.table)
         .find(id)

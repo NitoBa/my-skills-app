@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react'
 import { Box, VStack, Icon, Text, Modal, useToast } from 'native-base'
+import { synchronize } from '@nozbe/watermelondb/sync'
 import NetInfo from '@react-native-community/netinfo'
 import { Feather } from '@expo/vector-icons'
 import { Header } from '../../components/Header'
 import { InputText } from '../../components/InputText'
 import { Button } from '../../components/Button'
 import { AuthContext } from '../../contexts/AuthContext'
-import { mySync } from '../../databases/synchronize'
+import { database } from '../../databases'
+import { api } from '../../lib/axios'
 
 export function Profile() {
   const [isOpenModal, setIsModalOpen] = useState(false)
@@ -31,13 +33,34 @@ export function Profile() {
         return
       }
 
-      await mySync()
-
-      toast.show({
-        title: 'Great, your data was successfully synced',
-        bgColor: 'success.500',
+      await synchronize({
+        database,
+        pullChanges: async ({ lastPulledAt }) => {
+          const {
+            data: { changes, timestamp },
+          } = await api.get(`/skills/sync/pull/${lastPulledAt || 0}`)
+          toast.show({
+            title: 'Great, your data was successfully synced',
+            bgColor: 'success.500',
+          })
+          setIsLoadingSync(false)
+          return { changes, timestamp }
+        },
+        pushChanges: async ({ changes, lastPulledAt }) => {
+          const skills = changes.skills
+          await api.post('/skills/sync/push', {
+            skills,
+            lastPulledAt,
+          })
+          toast.show({
+            title: 'Great, your data was successfully synced',
+            bgColor: 'success.500',
+          })
+          const deletedIDs = await database.adapter.getDeletedRecords('skills')
+          await database.adapter.destroyDeletedRecords('skills', deletedIDs)
+          setIsLoadingSync(false)
+        },
       })
-      setIsLoadingSync(false)
     } catch (error) {
       console.log(error)
       setIsLoadingSync(false)

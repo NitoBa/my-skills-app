@@ -10,4 +10,5 @@ const adapter = new SQLiteDatabase({
 export const database = new Database({
   adapter,
   modelClasses: [SkillModel],
+  actionsEnabled: true,
 })
