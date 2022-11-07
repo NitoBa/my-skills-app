@@ -341,6 +341,33 @@ PODS:
     - React
   - RNCAsyncStorage (1.17.10):
     - React-Core
+  - RNReanimated (2.9.1):
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - glog
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNScreens (3.15.0):
     - React-Core
     - React-RCTImage
@@ -398,6 +425,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RealmJS (from `../node_modules/realm`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -503,6 +531,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/realm"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -561,6 +591,7 @@ SPEC CHECKSUMS:
   ReactCommon: abf3605a56f98b91671d0d1327addc4ffb87af77
   RealmJS: 55a0d0d600a0da7d5f0cf42ecbabcd09708c7601
   RNCAsyncStorage: 0c357f3156fcb16c8589ede67cc036330b6698ca
+  RNReanimated: 24508aef58348323f891abd6616debf39173f1b9
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   Yoga: 1f02ef4ce4469aefc36167138441b27d988282b1

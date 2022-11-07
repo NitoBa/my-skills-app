@@ -6,11 +6,13 @@ import { Header } from '../../components/Header'
 import { InputText } from '../../components/InputText'
 import { Button } from '../../components/Button'
 import { AuthContext } from '../../contexts/AuthContext'
+import { SkillContext } from '../../contexts/SkillContext'
 
 export function Profile() {
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [loadingSync, setIsLoadingSync] = useState(false)
   const { user, handleLogout } = useContext(AuthContext)
+  const { startSync } = useContext(SkillContext)
   const toast = useToast()
 
   function handleSignOut() {
@@ -29,6 +31,7 @@ export function Profile() {
         })
         return
       }
+      startSync()
     } catch (error) {
       console.log(error)
       setIsLoadingSync(false)
